@@ -1,0 +1,261 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+ 	<title>FloodFill</title>
+ 	<!-- fontawesome -->
+ 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+ 	<!-- bootstrap -->
+ 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+ 	<!-- style-sheet -->
+ 	<link rel="stylesheet" type="text/css" href="style.css">
+ </head>
+ <body>
+ 	<!-- all the quoets will go in this -->
+ 	<section class="phrase">
+		<div class="container">
+			<div class="in-phrase">
+				<p>“Nothing worth having comes easy.”</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="intro">
+		<div class="container">
+			<div class="in-intro">
+				<!-- main heading -->
+				<h1 class="main-heading">FLOODFILL</h1>
+
+				<p class="paragraph">Hey there coder ! Enjoying yourself, are you ? Not for long. We bring you to this crazy question <b>“FloodFill”</b> and can promise you one thing for sure, it’s gonna be one hell of a ride. </p>
+				<p class="paragraph">We want you to first go through the Question video so that we can discuss the problem.</p>
+				<!-- video Question video link-->
+				<div class="iframe-container" id="full-video">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/FkkgY7qQF_s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+
+				<ul>
+					<li>You are given a 2d array of dimensions n*m.</li>
+					<li>This array is filled with either 0 or 1. You can only move to cells which have 0 value in them. You 	can't move out of the boundaries or in the cells which have value 1 in them (1 means obstacle)</li>
+					<li>Only four moves are allowed:  't' (1-step up), 'l' (1-step left), 'd' (1-step down) 'r' (1-step 		right) 	in the given order only.</li>
+					<li>You are required to print all paths that can be used to move from top-left to bottom-right.</li>
+				</ul>
+				
+			</div>
+		</div>
+	</section>
+
+	<section class="examples">
+		<div class="container">
+			<div class=".first-example">
+				<p class="paragraph">Let’s discuss this problem using the example given in figure 1 where array has dimensions 		6*7.</p>
+				<!-- figure 1 -->
+				<div class="explain-image">
+					<img src="./image/figure (1).png">
+				</div>
+				<i class="figure-no">Figure 1</i>
+				<p class="paragraph">We have to print all the paths from top left to bottom left cell such that no path passes 		from the same cell more than once.</p>
+				<p class="paragraph">Let’s take a look at a few paths for this grid.</p>
+
+				<!-- figure 2 -->
+				<div class="explain-image">
+					<img src="./image/figure (2).png">
+				</div>
+				<i class="figure-no">Figure 2</i>
+
+				<p class="paragraph">In figure 2, two paths are given. The red line denotes the path “ddrdddrrrrr” and the 		green line denotes the path “ddrruurrrrddlldddrr”.</p>
+				<p class="paragraph">Can you find any other path on your own?</p>
+				<p class="paragraph">Let’s have a look at the path which is not allowed.</p>
+				<!-- figure 3 -->
+				<div class="explain-image">
+					<img src="./image/figure (3).png">
+				</div>
+				<i class="figure-no">Figure 3</i>
+
+				<p class="paragraph">This path is not valid because it goes through the same cell more than once which is not 		allowed.</p>
+				<p class="paragraph">You haven’t even realized but we have started graphs (Depth First Search) in recursion. 	 We’ll discuss it in detail later.</p>
+				<p class="paragraph">The code of this question is quite easy however its analysis is quite in-depth so we 		discuss the code first.</p>
+			</div>
+		</div>
+	</section>
+	<section class="code">
+		<div class="container">
+			<div class="in-code">
+				<h4 class="sub-heading">CODE </h4>
+				<p class="paragraph">In the code snippet given below we write the basic code and make intelligent base cases.</p>
+				<!-- code 1 -->
+				<i class="code-head">//FIRST TRY</i>
+				<div class=" cod1 explain-image">
+					<img src="./image/code (1).png">
+				</div>
+				
+				<p class="paragraph">Let’s analyze the working of this code, only then we will be able to catch any mistakes 	in it .</p>
+				<p class="paragraph">We pass the following arguments as the parameters in the function “floodfill”.</p>
+				<!-- code 2 -->
+				<div class=" cod2 explain-image">
+					<img src="./image/code (2).png">
+				</div>
+
+				<p class="paragraph"><span>BASE CASE :</span>It suggests if the row and column ever goes out of the grid i.e. 	 if they are less than 0 or greater than the row or column of the given array then the function will be 		returned .</p>
+				<p class="paragraph"><span>Here the order of the “Or (||)” statements matter.</span> You can’t check the 		condition of  maze[sr][sc]==1 first .This is because even if one of the OR statements is true then true 	is returned without checking the other conditions. Had maze[sr][sc]==1 been checked before sr<0 when the 	 row actually were negative then an Exception would have been thrown that maze[sr][sc] can’t be checked 	because a negative row doesn’t exist in the array.
+				</p>
+				<p class="paragraph">Another base case is that when row and column become equal to the last indices on the 		grid then “Answer so far” is printed and the function is returned.</p>
+
+				<p class="paragraph">Then using our basic knowledge of recursion we call the function “floodfill” recursively 	for top, left, down and right steps.</p>
+
+				<p class="paragraph">However, if we run this code, we get a RUNTIME ERROR –STACK OVERFLOW.</p>
+
+				<p class="paragraph">Where did this come from? Didn’t we do everything right?</p>
+
+				<p class="paragraph">No. We didn’t. Let’s see WHY by dry running this code.</p>
+
+				<!-- figure 4 -->
+				<div class=" fig4 explain-image">
+					<img src="./image/figure (4).png">
+				</div>
+				<i class="figure-no">Figure 4</i>
+
+				<p class="paragraph">We can see in figure 4, when we are initially at maze[0][0], //1 and //2 are checked and we are allowed to go further. Then, the recursive function for ‘t’ is run which fails the base case as sr<0  and we move to the ‘l’ call. Again the base case fails. Now we move to the ‘d’ statement. As it runs we move a step down and reach maze[1][0]. 
+				</p>
+				<p class="paragraph">maze[1][0] passes the test cases and we move a step up. We again reach the cell we were at previously.</p>
+
+				<p class="paragraph">Again for maze[0][0] we run the code and like earlier reach maze[1][0] again. Hence we keep moving up and down infinitely.This can also be seen from the stack .</p>
+
+				<p class="paragraph">We need to break this infinite recursion. Let’s see how.</p>
+
+				<p class="paragraph">We need to do something so that if we have visited a cell already we don’t have to visit it again. Look at the code given below and notice the changes.</p>
+
+				<!-- code 3 -->
+				<i class="code-head">//SECOND TRY</i>
+				<div class=" cod3 explain-image">
+					<img src="./image/code (3).png">
+				</div>
+
+				<p class="paragraph">Here, we pass an empty boolean 2d array in the function as a parameter called “visited[][]” which has the dimensions same as are our input array.</p>
+
+				<p class="paragraph">Before visiting a cell in the maze array , we mark the corresponding cell in the visited array “ true” so that in the duration of the same path we don’t visit the already visited cell again.</p>
+
+				<p class="paragraph">For this we write a condition in Base Case of the problem which checks whether we have already visited that cell of the array or not.</p>
+
+				<p class="paragraph">To resolve the previous mistake we took the help of the concept of Dynamic programming by introducing a visited array. You will learn more about it later. </p>
+
+				<p class="paragraph">Let’s try to dry run the code till now and check if it is the final code or not.</p>
+
+				<!-- figure 5 -->
+				<div class=" fig5 explain-image">
+					<img src="./image/figure (5).png">
+				</div>
+				<i class="figure-no">Figure 5</i>
+
+				<p class="paragraph">Figure 5 gives us the dry run for the second try code. Here, ticked cells mean that they 	have been already visited . Then we make recursive calls for ‘t’, ‘l’ ,’d’ and ‘r’ . You can see the path 	  that running the code makes.</p>
+
+				<p class="paragraph">We reach the end of this path without reaching the destination because either the cells 	around that cell have already been visited before or they are obstacles. Hence we have no option to move 	forward and therefore we retreat.</p>
+
+				<p class="paragraph">For retreating, a level of stack keeps popping as we return to the previous level in the stack because the test case failed.</p>
+
+				<p class="paragraph">As we keep on doing it we reach the position when the situation looks like this:</p>
+
+				<!-- figure 6 -->
+				<div class=" fig6 explain-image">
+					<img src="./image/figure (6).png">
+				</div>
+				<i class="figure-no">Figure 6</i>
+
+				<p class="paragraph">Now, we reach the cell marked with “tl”. Then we try to move down but can’t because the cell is visited</p>
+
+				<p class="paragraph">Then we try to move right however we are not able to because the cell is marked visited even though no path goes through it !</p>
+
+				<p class="paragraph">So do you realize our mistake in the previous code? We retreated from the path without unmarking the cells along that path. </p>
+				<p class="paragraph">Hence we were not able to continue by going on the previous path even after that previous path was wiped out earlier.</p>
+				<p class="paragraph">To correct our mistake we make a small modification in our code as you can see below:</p>
+				
+				<!-- code 4 -->
+				<i class="code-head">//THIRD TRY</i>
+				<div class=" cod4 explain-image">
+					<img src="./image/code (4).png">
+				</div>
+
+				<!-- code 5 -->
+				<div class=" cod5 explain-image">
+					<img src="./image/code (5).png">
+				</div>
+
+				<p class="paragraph">Notice that after all the recursion calls have run completely and returned, we mark that cell as false again. That is, we are free to move on that cell if we want to.</p>
+
+				<p class="paragraph">Now when we retreat , the ticks are also wiped out as can been seen below:</p>
+
+				<!-- figure 7 -->
+				<div class=" fig7 explain-image">
+					<img src="./image/figure (7).png">
+				</div>
+				<i class="figure-no">Figure 7</i>
+
+				<p class="paragraph">When this is the case, we again try to look for a new path which is illustrated by Figure 8.2.</p>
+
+				<!-- figure 8 -->
+				<div class="fig8 explain-image">
+					<img src="./image/figure (8).png">
+				</div>
+				<i class="figure-no">Figure 8</i>
+
+				<p class="paragraph">In the previous traversal we tried to go on the path 8.1 and after the path was retreated and we once again marked the visited cells as unvisited, we went looking for a new path illustrated by 8.2.</p>
+
+				<p class="paragraph">However both of these paths are undesirable because they meet obstacles.</p>
+
+				<p class="paragraph">Hence we retreat again (see figure 9) .</p>
+
+				<!-- figure 9 -->
+				<div class="fig9 explain-image">
+					<img src="./image/figure (9).png">
+				</div>
+				<i class="figure-no">Figure 9</i>
+
+				<p class="paragraph">Now we start finding a new path which ultimately leads us to our destination (figure 10).</p>
+
+				<!-- figure 10 -->
+				<div class="fig10 explain-image">
+					<img src="./image/figure (10).png">
+				</div>
+				<i class="figure-no">Figure 10</i>
+
+				<p class="paragraph">Hence we have found our first path “ddrdddrrrrr”.</p>
+				<p class="paragraph">This is only the first path and when we return from the previous recursive processes we start retreating again until we reach another stop from which a new path can be continued.</p>
+
+				<!-- figure 11 -->
+				<div class="fig11 explain-image">
+					<img src="./image/figure (11).png">
+				</div>
+				<i class="figure-no">Figure 11</i>
+
+				<p class="paragraph">We started wiping out the cells until we reached the position as shown in figure 11.</p>
+				<p class="paragraph">Again the cells are visited and unvisited multiple times until we find a new path.</p>
+				<p class="paragraph">We highly request you to watch the video “FloodFill” to see the traversal through the grid properly as all of it can’t be explained in the article form.</p>
+				<p class="paragraph">We started wiping out the cells until we reached the position as shown in figure 11.</p>
+
+				<!-- video Solution video-->
+				<div class="iframe-container" id="solution-video">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/R1URUB6_y2k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+
+				<p class="paragraph">Hence, the code in the “Third Try” gives us the desirable outputs so it is our final code.</p>
+				<p class="paragraph"><span class="heading-3">TIME COMPLEXITY-</span> O(4*n2) which can simply be written as O(n2).</p>
+				<p class="paragraph"><span class="heading-3">SPACE COMPLEXITY-</span> O(n2)</p>
+
+				<p class="paragraph">With this we conclude our article. But your work is not yet complete. You need to watch the video”FloodFill” again and again and practice the traversal by hand. We know that it can get quite lengthy but after doing this much hard work on a question you’ll never forget it.</p>
+
+				<p class="paragraph">For now, Goodbye.</p>
+				
+				
+				
+			</div>
+		</div>
+	</section>
+	<section class="author">
+		<div class="container">
+			<div class="contributor">
+				<p class="paragraph"><b>Article by</b></p>
+				<p class="author-name">Shreeya Gupta</p>
+			</div>
+		</div>
+	</section>
+ <script src="script.js" ></script>
+ </body>
+ </html>
